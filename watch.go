@@ -2,9 +2,9 @@ package pike
 
 import "bytes"
 
-// NewChangeFilter will only pass through files that have different data.
+// ChangeFilter will only pass through files that have different data.
 // Useful when you are running a Graph with Watch.
-func NewChangeFilter() *Node {
+func ChangeFilter() *Node {
 	f := func(in, out []chan File, cache map[string]File) {
 		for file := range in[0] {
 			cachedFile, ok := cache[file.Name()]
@@ -24,7 +24,7 @@ func NewChangeFilter() *Node {
 // pass on all files in the first stream. This is useful in the place of the
 // ChangeFilter for files that implicitly depend on other files, such as a
 // less file with @import.
-func NewChangeWatcher() *Node {
+func ChangeWatcher() *Node {
 	f := func(in, out []chan File, cache map[string]File) {
 		primaryStream := make([]File, 0)
 		anyChanges := false
@@ -59,10 +59,10 @@ func NewChangeWatcher() *Node {
 	return NewNode("change watcher", 2, -1, 1, 1, runner)
 }
 
-// NewChangeCache creates a Node that remembers all files that have passed
+// ChangeCache creates a Node that remembers all files that have passed
 // through it, and replays them. Works well with ChangeFilter when you have
 // later Nodes that must operate on all files.
-func NewChangeCache() *Node {
+func ChangeCache() *Node {
 	f := func(in, out []chan File, cache map[string]File) {
 		seenFiles := make(map[string]bool)
 		seenAny := false

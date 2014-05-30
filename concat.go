@@ -1,8 +1,8 @@
 package pike
 
-// NewConcat creates a node that will concatenate all processed files into a
+// Concat creates a node that will concatenate all processed files into a
 // single file.
-func NewConcat(path string) *Node {
+func Concat(path string) *Node {
 	f := func(in, out chan File) {
 		bigFile := NewFile("", path, make([]byte, 0))
 		for file := range in {
@@ -13,5 +13,5 @@ func NewConcat(path string) *Node {
 			out <- bigFile
 		}
 	}
-	return NewFunc("concat", f)
+	return NewFuncNode("concat", f)
 }

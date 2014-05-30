@@ -7,7 +7,7 @@ import (
 
 // NewHtmlTemplateCache compiles html files into an angular.run() command that
 // puts the html into the $templateCache.
-func NewHtmlTemplateCache(module, prefix string) *Node {
+func HtmlTemplateCache(module, prefix string) *Node {
 	prefix = "/" + strings.Trim(prefix, "/") + "/"
 	if prefix == "//" {
 		prefix = "/"
@@ -21,5 +21,5 @@ func NewHtmlTemplateCache(module, prefix string) *Node {
 			out <- file
 		}
 	}
-	return NewFunc("html2tc", f)
+	return NewFuncNode("html2tc", f)
 }

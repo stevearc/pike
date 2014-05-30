@@ -10,12 +10,12 @@ import (
 	"github.com/stevearc/pike/plog"
 )
 
-// NewCoffee creates a Node that compiles coffeescript. Requires coffeescript
+// Coffee creates a Node that compiles coffeescript. Requires coffeescript
 // (npm install -g coffee-script). There are up to three outputs:
 //   1. js files
 //   2. map files
 //   3. coffee files
-func NewCoffee() *Node {
+func Coffee() *Node {
 	f := func(in, out []chan File) {
 		useSourceMaps := len(out) > 1
 		for file := range in[0] {

@@ -44,8 +44,8 @@ func NewNode(name string, minIn, maxIn, minOut, maxOut int, runner Runnable) *No
 	return &Node{name, nil, nil, minIn, maxIn, minOut, maxOut, runner}
 }
 
-// NewFunc constructs a simple 1-input, 1-output node from a function.
-func NewFunc(name string, run func(in, out chan File)) *Node {
+// NewFuncNode constructs a simple 1-input, 1-output node from a function.
+func NewFuncNode(name string, run func(in, out chan File)) *Node {
 	f := func(in, out []chan File) {
 		run(in[0], out[0])
 		close(out[0])

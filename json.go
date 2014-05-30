@@ -70,10 +70,10 @@ func writeJsonFile() {
 	config.Lock.Unlock()
 }
 
-// NewJson creates a Node that dumps the paths of all files into a json file.
+// Json creates a Node that dumps the paths of all files into a json file.
 // The Json file is global (it's the same for ALL graphs in a process) and must
 // be set with SetJsonFile.
-func NewJson(key string) *Node {
+func Json(key string) *Node {
 	f := func(in, out chan File) {
 		newFiles := false
 		for file := range in {
@@ -96,5 +96,5 @@ func NewJson(key string) *Node {
 			writeJsonFile()
 		}
 	}
-	return NewFunc("json", f)
+	return NewFuncNode("json", f)
 }

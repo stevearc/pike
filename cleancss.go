@@ -9,9 +9,9 @@ import (
 	"github.com/stevearc/pike/plog"
 )
 
-// NewCleanCss creates a node that runs cleancss on files. Requires cleancss
+// CleanCss creates a node that runs cleancss on files. Requires cleancss
 // (npm install -g clean-css).
-func NewCleanCss() *Node {
+func CleanCss() *Node {
 	f := func(in, out chan File) {
 		for file := range in {
 			path := filepath.Dir(file.Fullpath())
@@ -29,5 +29,5 @@ func NewCleanCss() *Node {
 			out <- file
 		}
 	}
-	return NewFunc("cleancss", f)
+	return NewFuncNode("cleancss", f)
 }

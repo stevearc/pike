@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 )
 
-// NewFingerprint creates a Node that will add an md5 hash to the name of all
+// Fingerprint creates a Node that will add an md5 hash to the name of all
 // files it processes. This is useful for cache busting.
-func NewFingerprint() *Node {
+func Fingerprint() *Node {
 	f := func(in, out chan File) {
 		for file := range in {
 			sum := md5.Sum(file.Data())
@@ -24,5 +24,5 @@ func NewFingerprint() *Node {
 			out <- file
 		}
 	}
-	return NewFunc("fingerprint", f)
+	return NewFuncNode("fingerprint", f)
 }

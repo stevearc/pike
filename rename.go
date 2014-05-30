@@ -8,7 +8,7 @@ import (
 	"github.com/stevearc/pike/plog"
 )
 
-// NewRename creates a Node that renames the Files that pass through. 'format'
+// Rename creates a Node that renames the Files that pass through. 'format'
 // is a go template string. The variables available in the template are below
 // for the example filename "/app/src/myapp.js".
 //   Fullname: /app/src/myapp.js
@@ -16,7 +16,7 @@ import (
 //   Name    : myapp.js
 //   Barename: myapp
 //   Ext     : .js
-func NewRename(format string) *Node {
+func Rename(format string) *Node {
 	tmpl, err := template.New("rename").Parse(format)
 	if err != nil {
 		plog.Exc(err)
@@ -52,5 +52,5 @@ func NewRename(format string) *Node {
 			}
 		}
 	}
-	return NewFunc("rename", f)
+	return NewFuncNode("rename", f)
 }

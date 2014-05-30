@@ -8,7 +8,7 @@ First install Go and configure your GOPATH (see http://golang.org/doc/install).
 Then install pike with:
 
 ```
-    go get https://github.com/stevearc/pike
+    go get github.com/stevearc/pike
 ```
 
 Pike represents all operations as [directed acyclic
@@ -18,9 +18,9 @@ use cases will only require simple, linear graphs. Let's look at an example
 that compiles and minifies LESS files:
 
 ```
-n := pike.NewSource("app/src", "*.less")
-n = n.Pipe(pike.NewLess())
-n = n.Pipe(pike.NewCleanCss())
+n := pike.Glob("app/src", "*.less")
+n = n.Pipe(pike.Less())
+n = n.Pipe(pike.CleanCss())
 n = n.Pipe(pike.Write("build"))
 
 g := pike.NewGraph("app.less")
@@ -34,12 +34,12 @@ original coffeescript files. Let's look at an example that takes advantage of
 that.
 
 ```
-n := pike.NewSource("app/src", "*.coffee")
+n := pike.Glob("app/src", "*.coffee")
 
 // We use Fork instead of Pipe to take advantage of multiple cores
 // The '0' will cause it to create 2*NumCPUs nodes
 // The '3' is the number of output edges on the terminus
-n = n.Fork(pike.NewCoffee(), 0, 3)
+n = n.Fork(pike.Coffee(), 0, 3)
 
 // Since we have 3 output edges, we use Xargs here instead of Pipe
 n = n.Xargs(pike.Write("build"), 3)
@@ -59,14 +59,14 @@ package main
 func makeAllGraphs(watch bool) []*pike.Graph {
 	allGraphs := make([]*pike.Graph, 0, 10)
 
-	n = pike.NewSource("app/src", "*.less")
+	n = pike.Glob("app/src", "*.less")
 	// If we're watching for changes, make sure the graph only sends through
 	// files that have changed.
 	if watch {
-		n = n.Pipe(pike.NewChangeFilter())
+		n = n.Pipe(pike.ChangeFilter())
 	}
-	n = n.Pipe(pike.NewLess())
-	n = n.Pipe(pike.NewCleanCss())
+	n = n.Pipe(pike.Less())
+	n = n.Pipe(pike.CleanCss())
 	// Write all output file names to the json file
 	n = n.Pipe(pike.Json("app.css"))
 	n = n.Pipe(pike.Write("build"))
@@ -74,17 +74,17 @@ func makeAllGraphs(watch bool) []*pike.Graph {
 	g.Add(n)
 	allGraphs = append(allGraphs, g)
 
-	n := pike.NewSource("app/src", "*.coffee")
+	n := pike.Glob("app/src", "*.coffee")
 	if watch {
-		n = n.Pipe(pike.NewChangeFilter())
-		n = n.Fork(pike.NewCoffee(), 0, 3)
+		n = n.Pipe(pike.ChangeFilter())
+		n = n.Fork(pike.Coffee(), 0, 3)
 	} else {
 		// If we're not watching for changes, discard source maps
-		n = n.Fork(pike.NewCoffee(), 0, 1)
+		n = n.Fork(pike.Coffee(), 0, 1)
 		// Merge all js files into a single file
-		n = n.Pipe(pike.NewConcat("app.js"))
+		n = n.Pipe(pike.Concat("app.js"))
 		// Minify the final file
-		n = n.Pipe(pike.NewUglify())
+		n = n.Pipe(pike.Uglify())
 	}
 	n = n.Xargs(pike.Write("build"), 0)
 	n = n.Pipe(pike.Json("app.js"))
@@ -108,7 +108,7 @@ For more details run `go run build.go -h`.
 After you build your assets, you will likely need to integrate them somehow
 with your application. Pike allows you to dump a list of all generated files
 into a json file, which can then be read by your application. Just call
-`pike.SetJsonFile("out.json")` and put a `pike.NewJson("app.js")` in each
+`pike.SetJsonFile("out.json")` and put a `pike.Json("app.js")` in each
 graph.
 
 ## Debugging

@@ -2,10 +2,10 @@ package pike
 
 import "time"
 
-// NewMerge creates a Node that merges multiple input streams into a single
+// Merge creates a Node that merges multiple input streams into a single
 // output. The ordering of the edges is preserved (i.e. all files from the
 // first edge will preceed files from the second input edge).
-func NewMerge() *Node {
+func Merge() *Node {
 	f := func(in, out []chan File) {
 		o := out[0]
 		for _, c := range in {
@@ -19,9 +19,9 @@ func NewMerge() *Node {
 	return NewNode("merge", 2, -1, 1, 1, runner)
 }
 
-// NewMergeUnordered creates a Node that merges multiple input streams into a
+// MergeUnordered creates a Node that merges multiple input streams into a
 // single output. There are no ordering guarantees across edges.
-func NewMergeUnordered() *Node {
+func MergeUnordered() *Node {
 	f := func(in, out []chan File) {
 		allClosed := false
 		for !allClosed {

@@ -19,10 +19,10 @@ func remove(stringArr []string, str string) {
 	}
 }
 
-// NewSource creates a new source node that reads files from a directory. It
+// Glob creates a new source node that reads files from a directory. It
 // will search recursively under 'root' for any files that match the patterns. The patterns are standard globs, with one exception. If you place a "!" at the beginning of the pattern, it will find all matching files and *remove* them from the existing set of matched files. You can use this, for example, to match all unminified css files:
-//    n := pike.NewSource("src", "*.css", "!*.min.css")
-func NewSource(root string, patterns ...string) *Node {
+//    n := pike.Glob("src", "*.css", "!*.min.css")
+func Glob(root string, patterns ...string) *Node {
 	sourceFunc := func(in, out []chan File) {
 		paths := make([]string, 0, 10)
 		for _, pattern := range patterns {

@@ -9,9 +9,9 @@ import (
 	"github.com/stevearc/pike/plog"
 )
 
-// NewLess creates a Node that runs the LESS CSS preprocessor on files.
+// Less creates a Node that runs the LESS CSS preprocessor on files.
 // Requires less (npm install -g less)
-func NewLess() *Node {
+func Less() *Node {
 	f := func(in, out chan File) {
 		for file := range in {
 			cmd := exec.Command("lessc", "-")
@@ -29,5 +29,5 @@ func NewLess() *Node {
 			out <- file
 		}
 	}
-	return NewFunc("less", f)
+	return NewFuncNode("less", f)
 }

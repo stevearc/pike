@@ -8,14 +8,14 @@ import (
 	"github.com/stevearc/pike/plog"
 )
 
-// NewWrite creates a node that writes files to a destination.
-func NewWrite(dest string) *Node {
-	return NewWriteMode(dest, 0644)
+// Write creates a node that writes files to a destination.
+func Write(dest string) *Node {
+	return WriteMode(dest, 0644)
 }
 
-// NewWriteMode creates a node that writes files to a destination with a
+// WriteMode creates a node that writes files to a destination with a
 // specific file mode.
-func NewWriteMode(dest string, perm os.FileMode) *Node {
+func WriteMode(dest string, perm os.FileMode) *Node {
 	f := func(in, out chan File) {
 		for file := range in {
 			// Make sure the directory exists
@@ -44,5 +44,5 @@ func NewWriteMode(dest string, perm os.FileMode) *Node {
 			out <- file
 		}
 	}
-	return NewFunc("write", f)
+	return NewFuncNode("write", f)
 }

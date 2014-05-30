@@ -8,9 +8,9 @@ import (
 	"github.com/stevearc/pike/plog"
 )
 
-// NewUglify creates a Node that runs uglifyjs on files. Requires uglifyjs (npm
+// Uglify creates a Node that runs uglifyjs on files. Requires uglifyjs (npm
 // install -g uglify-js).
-func NewUglify() *Node {
+func Uglify() *Node {
 	f := func(in, out chan File) {
 		for file := range in {
 			cmd := exec.Command("uglifyjs")
@@ -25,5 +25,5 @@ func NewUglify() *Node {
 			out <- file
 		}
 	}
-	return NewFunc("uglify", f)
+	return NewFuncNode("uglify", f)
 }

@@ -154,7 +154,7 @@ func (graph *Graph) start(in, out []chan File) (*sync.WaitGroup, error) {
 
 // Watch will run the Graph continuously, sleeping for 'poll' between
 // runs. If you use this method, your Graph should contain some nodes
-// that watch for file changes (i.e. NewChangeFilter), otherwise it
+// that watch for file changes (i.e. ChangeFilter), otherwise it
 // will just continually process all your files.
 func (graph *Graph) Watch(poll time.Duration, quit chan int) error {
 	for {

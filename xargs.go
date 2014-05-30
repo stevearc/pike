@@ -2,10 +2,10 @@ package pike
 
 import "github.com/stevearc/pike/plog"
 
-// NewFanin creates a node that takes inputs from multiple sources and maps
+// Fanin creates a node that takes inputs from multiple sources and maps
 // them to its own outputs. This is used to converge multiple branches into a
 // single node.
-func NewFanIn() *Node {
+func FanIn() *Node {
 	f := func(in, out []chan File) {
 		if len(in) < len(out) {
 			plog.Error("Fan-in node has fewer inputs than outputs")
@@ -45,7 +45,7 @@ func (n1 *Node) Xargs(nodeMaker Nodeable, edges int) *Node {
 	if edges == 1 {
 		return n1.Pipe(n2)
 	}
-	fanIn := NewFanIn()
+	fanIn := FanIn()
 	for i := 0; i < edges; i++ {
 		n2Copy := n2.Copy()
 		n1.Pipe(n2Copy)
