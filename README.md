@@ -59,7 +59,7 @@ package main
 func makeAllGraphs(watch bool) []*pike.Graph {
 	allGraphs := make([]*pike.Graph, 0, 10)
 
-	n = pike.Glob("app/src", "*.less")
+	n := pike.Glob("app/src", "*.less")
 	// If we're watching for changes, make sure the graph only sends through
 	// files that have changed.
 	if watch {
@@ -70,11 +70,11 @@ func makeAllGraphs(watch bool) []*pike.Graph {
 	// Write all output file names to the json file
 	n = n.Pipe(pike.Json("app.css"))
 	n = n.Pipe(pike.Write("build"))
-	g = pike.NewGraph("app.less")
+	g := pike.NewGraph("app.less")
 	g.Add(n)
 	allGraphs = append(allGraphs, g)
 
-	n := pike.Glob("app/src", "*.coffee")
+	n = pike.Glob("app/src", "*.coffee")
 	if watch {
 		n = n.Pipe(pike.ChangeFilter())
 		n = n.Fork(pike.Coffee(), 0, 3)
@@ -88,7 +88,7 @@ func makeAllGraphs(watch bool) []*pike.Graph {
 	}
 	n = n.Xargs(pike.Write("build"), 0)
 	n = n.Pipe(pike.Json("app.js"))
-	g := pike.NewGraph("app.js")
+	g = pike.NewGraph("app.js")
 	g.Add(n)
 	allGraphs = append(allGraphs, g)
 
