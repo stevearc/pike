@@ -31,12 +31,12 @@ func ChangeWatcher() *Node {
 		// Check primary stream for changes
 		for file := range in[0] {
 			cachedFile, ok := cache[file.Name()]
+			primaryStream = append(primaryStream, file)
 			if anyChanges || (ok && bytes.Equal(cachedFile.Data(), file.Data())) {
 				continue
 			}
 			anyChanges = true
 			cache[file.Name()] = file.Copy()
-			primaryStream = append(primaryStream, file)
 		}
 		// Check all other input streams for changes
 		for _, c := range in[1:] {
