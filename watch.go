@@ -45,6 +45,7 @@ func ChangeWatcher() *Node {
 				if anyChanges || (ok && bytes.Equal(cachedFile.Data(), file.Data())) {
 					continue
 				}
+				cache[file.Name()] = file.Copy()
 				anyChanges = true
 			}
 		}
