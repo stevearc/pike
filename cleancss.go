@@ -15,7 +15,7 @@ func CleanCss() *Node {
 	f := func(in, out chan File) {
 		for file := range in {
 			path := filepath.Dir(file.Fullpath())
-			cmd := exec.Command("cleancss", "--root", path)
+			cmd := exec.Command("cleancss")
 			cmd.Stdin = bytes.NewReader(file.Data())
 			cmd.Stderr = os.Stderr
 			cmd.Dir = path
